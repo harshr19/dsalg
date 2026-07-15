@@ -1,11 +1,10 @@
 class Solution {
     public boolean checkIfPangram(String sentence) {
-       int[] alphabets = new int[26];
-       for(int i = 0; i < sentence.length(); i++){
-            alphabets[sentence.charAt(i)- 'a']++;
-        }
-        for(int i : alphabets)if(i == 0) return false;
-        return true; 
+      int n = sentence.length();
+         for(char ch = 'a';ch<='z';ch++){ 
+            if(sentence.indexOf(ch)== -1) return false;
+         }
+         return true;
     }
 }
 
