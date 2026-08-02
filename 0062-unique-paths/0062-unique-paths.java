@@ -1,16 +1,19 @@
 class Solution {
     public int uniquePaths(int m, int n) {
         int[][] dp = new int[m][n];
-        java.util.Arrays.stream(dp).forEach(row -> java.util.Arrays.fill(row, -1));
-        return logic(0,0, m ,n, dp);
-    }
-    private int logic(int a, int b, int m, int n, int[][]dp){
-        if(a == m-1 && b == n-1)  return dp[a][b] = 1;
-        if(a == m || b == n) return 0;
-        if(dp[a][b] != -1)  return dp[a][b] ;
-        int cnt1 = logic(a+1, b,m, n, dp);
-        int cnt2 = logic(a, b+1,m , n, dp);
-        return dp[a][b] =  cnt1 + cnt2;
+        for(int i = 0; i < m; i++){
+           dp[i][0] = 1;
+        }
+        for(int i = 0; i < n; i++){
+           dp[0][i] = 1;
+        }
+        for(int i = 1; i < m; i++){
+            for(int j = 1; j < n; j++){
+                int cost = dp[i][j-1] + dp[i-1][j];
+                dp[i][j] = cost;
+            }
+        }
+        return dp[m-1][n-1];
     }
 }
 
