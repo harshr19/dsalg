@@ -13,17 +13,17 @@ class Solution {
         }
         if(open < n){
             sb.append('(');
-            ++open;
-            logic(res, sb, open, close, n);
+           
+            logic(res, sb, open+1, close, n);
             sb.deleteCharAt(sb.length() - 1);
-            --open;
+
         }
         if(close < open){
              sb.append(')');
-            ++close;
-            logic(res, sb, open, close, n);
+            
+            logic(res, sb, open, close+1, n);
             sb.deleteCharAt(sb.length() - 1);
-            --close;
+            
         }
     }
 }
