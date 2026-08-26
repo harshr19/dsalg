@@ -1,11 +1,12 @@
 class Solution {
     public int missingMultiple(int[] nums, int k) {
-        Arrays.sort(nums);
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int num : nums){
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
         int smallest = k;
-        for(int i : nums){
-            if(i == smallest){
-                smallest += k;
-            }
+        while(map.containsKey(smallest)){
+            smallest += k;
         }
         return smallest;
     }
