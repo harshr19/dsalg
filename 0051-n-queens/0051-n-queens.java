@@ -1,99 +1,47 @@
 class Solution {
     public List<List<String>> solveNQueens(int n) {
-
-        List<List<String>> board = new ArrayList<>();
         List<List<String>> res = new ArrayList<>();
-
-        for (int i = 0; i < n; i++) {
-            List<String> row =
-                new ArrayList<>(Collections.nCopies(n, "."));
-            board.add(row);
+        char[][] board = new char[n][n];
+        for(char[] row : board){
+            Arrays.fill(row, '.');
         }
+        boolean[] cols = new boolean[n];
+        boolean[] diag1 = new boolean[2 * n];
+        boolean[] diag2 = new boolean[2 * n];
 
-        boolean[] placedCol = new boolean[n];
-
-        logic(board, res, n, 0, placedCol);
-
+        backtrack(0, n, board, res, cols, diag1, diag2);
         return res;
     }
-
-    private void logic(
-        List<List<String>> board,
-        List<List<String>> res,
-        int n,
-        int row,
-        boolean[] placedCol
-    ) {
-
-        if (row >= n) {
-            List<String> solution = new ArrayList<>();
-            for (List<String> temp : board) {
-                solution.add(String.join("", temp));
-            }       
-            res.add(solution);
+    private void backtrack(int row, int n,
+                           char[][]board, List<List<String>> res,
+                           boolean[]cols, boolean[]diag1, boolean[]diag2){
+    
+      if(row >= n){
+            List<String> soln = new ArrayList<>();
+            for(char[] rows: board){
+                soln.add(new String(rows));
+            }
+            res.add( soln);
             return;
         }
+        for(int col = 0; col < n; col++){
+            int d1 = row + col;
+            int d2 = row - col + n - 1;
+            if(cols[col] || diag1[d1] || diag2[d2]) continue;
+            
+            board[row][col] = 'Q';
+            cols[col] = true;
+            diag1[d1] = true;
+            diag2[d2] = true;
 
-        for (int col = 0; col < n; col++) {
+            backtrack(row + 1, n, board, res, cols, diag1, diag2);
+            
+            board[row][col] = '.';
 
-            if (canPlace(board, row, col, placedCol, n)) {
-
-                // Place
-                board.get(row).set(col, "Q");
-                placedCol[col] = true;
-
-                // Next row
-                logic(board, res, n, row + 1, placedCol);
-
-                // Backtrack
-                board.get(row).set(col, ".");
-                placedCol[col] = false;
-            }
+            cols[col] = false;
+            diag1[d1] = false;
+            diag2[d2] = false;   
         }
-    }
-
-    private boolean canPlace(
-        List<List<String>> board,
-        int row,
-        int col,
-        boolean[] placedCol,
-        int n
-    ) {
-
-        // Same column
-        if (placedCol[col]) {
-            return false;
-        }
-
-        // Upper-left diagonal
-        int i = row - 1;
-        int j = col - 1;
-
-        while (i >= 0 && j >= 0) {
-
-            if (board.get(i).get(j).equals("Q")) {
-                return false;
-            }
-
-            i--;
-            j--;
-        }
-
-        // Upper-right diagonal
-        i = row - 1;
-        j = col + 1;
-
-        while (i >= 0 && j < n) {
-
-            if (board.get(i).get(j).equals("Q")) {
-                return false;
-            }
-
-            i--;
-            j++;
-        }
-
-        return true;
     }
 }
 
