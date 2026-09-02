@@ -2,6 +2,9 @@ class Solution {
     public int minOperations(int[] nums) {
         int res = 0;
         for(int i = 0; i < nums.length; i++){
+            
+            if(nums[i] == 1) continue;
+
             int range = i + 2;
             if(nums[i] == 0 && range < nums.length){
                 nums[i] = 1;
